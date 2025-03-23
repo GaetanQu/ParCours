@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.gaetanquenouille.parcours.DTO.SubjectDTO;
+import fr.gaetanquenouille.parcours.error.ResourceAlreadyExistingException;
 import fr.gaetanquenouille.parcours.error.ResourceNotFoundException;
 import fr.gaetanquenouille.parcours.mapper.SubjectMapper;
 import fr.gaetanquenouille.parcours.model.Subject;
@@ -34,6 +35,9 @@ public class SubjectService {
 
     // Create a new subject
     public Subject createSubject(SubjectDTO subjectDTO) {
+        if (subjectRepository.findByLabel(subjectDTO.getLabel()) != null) {
+            throw new ResourceAlreadyExistingException("Subject");
+        }
         Subject subject = SubjectMapper.INSTANCE.toEntity(subjectDTO);
         return subjectRepository.save(subject);
     }

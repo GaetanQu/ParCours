@@ -7,5 +7,5 @@ import fr.gaetanquenouille.parcours.model.Subject;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
-    boolean findByLabel(String label);
+    Subject findByLabel(String label);
 }

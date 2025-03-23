@@ -43,11 +43,10 @@ public class SecurityConfig {
         httpSecurity
         .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api").authenticated()
-                .requestMatchers("/auth/register").hasRole("ADMIN")
-                .requestMatchers("/auth/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/**").authenticated()
-                .requestMatchers(HttpMethod.POST, "/api/session").hasRole("TEACHER")
+                .requestMatchers(HttpMethod.GET, "/api/**").authenticated() // Only authenticated users can access data
+                .requestMatchers("/auth/register").hasRole("ADMIN") //Only the admin can create new users
+                .requestMatchers("/auth/login").permitAll() // Everyone can connect
+                .requestMatchers("/api/sessions").hasRole("TEACHER") // Teachers can edit sessions
                 .anyRequest().hasRole("ADMIN")
             )
             .logout(logout -> logout
