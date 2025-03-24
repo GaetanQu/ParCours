@@ -113,4 +113,19 @@ public class AuthController {
         return ResponseEntity.ok().body(userDTO);
     }
 
+    // Validate a token
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestBody Map<String, String> request) {
+        // Extract the token from the JSON request
+        String token = request.get("token");
+
+        // Validate the token
+        boolean isValid = jwtUtils.validateToken(token);
+
+        // Return the result
+        return ResponseEntity.ok().body(Map.of(
+            "isValid", isValid
+        ));
+    }
+
 }

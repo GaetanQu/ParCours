@@ -57,6 +57,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login").permitAll() // Everyone can connect
                 .requestMatchers("/api/sessions").hasRole("TEACHER") // Teachers can edit sessions
                 .requestMatchers("/auth/user").authenticated() // Only authenticated users can access /auth/user
+                .requestMatchers("/auth/validate").permitAll() // Only authenticated users can access /auth/validate
 
                 .anyRequest().hasRole("ADMIN")
             )
