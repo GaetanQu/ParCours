@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.gaetanquenouille.parcours.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import fr.gaetanquenouille.parcours.DTO.LoginRequestDTO;
 import fr.gaetanquenouille.parcours.DTO.RegisterRequestDTO;
 import fr.gaetanquenouille.parcours.DTO.UserDTO;
+import fr.gaetanquenouille.parcours.config.JwtUtils;
 import fr.gaetanquenouille.parcours.mapper.UserMapper;
 import fr.gaetanquenouille.parcours.model.User;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,23 +23,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/auth")
+@AllArgsConstructor
 public class AuthController {
+
+    private final JwtUtils jwtUtils;
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper = UserMapper.INSTANCE;
-
-    // Initialize the controller with the UserRepository and PasswordEncoder
-    public AuthController(
-        UserRepository userRepository,
-        PasswordEncoder passwordEncoder,
-        AuthenticationManager authenticationManager
-        ) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-    }
 
     // Register a new user
     @PostMapping("/register")
@@ -77,11 +71,8 @@ public class AuthController {
                     loginRequestDTO.getPassword()
                 )
             );
-            return ResponseEntity.ok("User logged in successfully: " + authentication.getName());
+            return ResponseEntity.ok(jwtUtils.generateToken(authentication.getName()));
         } catch (AuthenticationException e) {
-            if(userRepository.findByUsername(loginRequestDTO.getUsername()) == null){
-                return ResponseEntity.status(401).body("Invalid username");
-            }
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
