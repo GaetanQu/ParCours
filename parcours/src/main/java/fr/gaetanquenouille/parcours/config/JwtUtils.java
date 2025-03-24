@@ -2,7 +2,6 @@ package fr.gaetanquenouille.parcours.config;
 
 import java.security.Key;
 import java.sql.Date;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -40,7 +39,7 @@ public class JwtUtils {
         }
     }
 
-    // Get the username from a token
+    // Get the user from a token
     public String getUsernameFromToken(String token){
         return Jwts.parserBuilder()
             .setSigningKey(secretKey)

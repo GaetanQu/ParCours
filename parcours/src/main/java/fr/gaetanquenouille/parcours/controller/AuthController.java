@@ -1,5 +1,7 @@
 package fr.gaetanquenouille.parcours.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,7 @@ import fr.gaetanquenouille.parcours.DTO.UserDTO;
 import fr.gaetanquenouille.parcours.config.JwtUtils;
 import fr.gaetanquenouille.parcours.mapper.UserMapper;
 import fr.gaetanquenouille.parcours.model.User;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,7 +38,7 @@ public class AuthController {
 
     // Register a new user
     @PostMapping("/register")
-    public ResponseEntity<String> register (@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<?> register (@RequestBody RegisterRequestDTO registerRequestDTO) {
         // Check if the username already exists & add a suffix if it does
         int i = 1;
         String username = registerRequestDTO.getFirst_name() + registerRequestDTO.getLast_name();
@@ -56,12 +59,14 @@ public class AuthController {
 
         UserDTO userDTO = userMapper.toDTO(user);
 
-        return ResponseEntity.ok("User registered successfully : " + userDTO.toString());
+        return ResponseEntity.ok().body(Map.of(
+            "user", userDTO
+        ));
     }
 
     // Login
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         System.out.println("Login endpoint hit with POST method");
         try {
             //Authenticate the user
@@ -71,11 +76,41 @@ public class AuthController {
                     loginRequestDTO.getPassword()
                 )
             );
-            return ResponseEntity.ok(jwtUtils.generateToken(authentication.getName()));
+
+            // Get the user
+            User user = userRepository.findByUsername(loginRequestDTO.getUsername().toLowerCase());
+            UserDTO userDTO = userMapper.toDTO(user);
+
+            // Generate a token
+            String token = jwtUtils.generateToken(authentication.getName());
+
+
+
+            return ResponseEntity.ok().body(Map.of(
+                "token", token,
+                "user", userDTO
+            ));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(401).body(Map.of(
+                "error", "Invalid credentials"
+            ));
         }
     }
     
-    
+    // Get user from token
+    @PostMapping("/user")
+    public ResponseEntity<UserDTO> getUserFromToken(@RequestBody Map<String, String> request) {
+        // Extract the token from the JSON request
+        String token = request.get("token");
+        // Get the username from the token
+        String username = jwtUtils.getUsernameFromToken(token);
+
+        // Get the user from the username
+        User user = userRepository.findByUsername(username);
+        UserDTO userDTO = userMapper.toDTO(user);
+
+        // Return the user
+        return ResponseEntity.ok().body(userDTO);
+    }
+
 }
