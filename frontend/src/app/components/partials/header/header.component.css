@@ -1,0 +1,22 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    nav ul {
+        display: flex;
+        align-items: center;
+        column-gap: 1em;
+    }
+
+    .user {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        row-gap: 0.5em;
+    }
+
+    /*DEBUG*/
+    background-color: blue;
+}

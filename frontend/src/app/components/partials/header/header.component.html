@@ -1,0 +1,14 @@
+@if (user) {
+    <header>
+        <nav>
+            <ul>
+                <li><a routerLink="home" routerLinkActive="active">Home</a></li>
+                <li><a routerLink="sessions">Sessions</a></li>
+            </ul>
+        </nav>
+            <div class="user">
+                <span>Connecté en tant que {{ user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1) }}</span>
+                <button (click)="logout()">Se déconnecter</button>
+            </div>
+    </header>
+}

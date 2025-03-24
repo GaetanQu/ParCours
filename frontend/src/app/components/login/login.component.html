@@ -1,0 +1,12 @@
+<h1>Connexion</h1>
+
+<form [formGroup]="loginFormGroup">
+    <label for="username">Nom d'utilisateur</label>
+    <input type="text" name="username" id="username" formControlName="username" required>
+    <label for="password">Mot de passe</label>
+    <input type="password" name="password" id="password" formControlName="password" required>
+    <button (click)="onSubmit()">Connexion</button>
+    @if (this.invalidCredentials) {
+        <p class="error">Identifiants invalides</p>
+    }
+</form>
