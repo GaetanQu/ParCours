@@ -1,1 +1,3 @@
-<p>sessions works!</p>
+@for (session of sessions; track $index) {
+    {{ session.label }}
+}
