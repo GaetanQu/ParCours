@@ -18,30 +18,34 @@ export class AuthService {
   ) { }
 
   // Login
-  public login(loginData: LoginRequestDTO): Observable<LoginResponseDTO> {
+  public login(loginData: LoginRequestDTO, rememberMe: boolean): Observable<LoginResponseDTO> {
     return this.apiService.post('auth/login', loginData)
       .pipe(
         tap((response: LoginResponseDTO) => {
           // Save token
           if(response.token) {
-            this.saveToken(response.token);
+            this.saveToken(response.token, rememberMe);
           }
         })
       );
   }
 
   // Save token to local storage
-  public saveToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+  public saveToken(token: string, rememberMe: boolean): void {
+    if (rememberMe) {
+      localStorage.setItem(this.TOKEN_KEY, token);
+    }
+    sessionStorage.setItem(this.TOKEN_KEY, token);
   }
 
   // Get token from local storage
   public getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return sessionStorage.getItem(this.TOKEN_KEY);
   }
 
   // Logout
   public logout(): void {
+    sessionStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.TOKEN_KEY);
   }
 
@@ -52,6 +56,11 @@ export class AuthService {
 
   // Check if user is logged in
   public isAuthenticated(): Observable<boolean> {
+    const localToken:string | null = localStorage.getItem(this.TOKEN_KEY);
+    // If token is in local storage, move it to session storage
+    if(localToken !== null) {
+      sessionStorage.setItem(this.TOKEN_KEY, localToken);
+    }
     if (this.getToken()) {
       return this.isValidToken().pipe(
         map((response: IsValidTokenResponseDTO) => response.isValid),

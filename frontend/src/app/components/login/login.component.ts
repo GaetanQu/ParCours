@@ -24,18 +24,20 @@ export class LoginComponent {
   // Arguments
   loginRequest: LoginRequestDTO = {} as LoginRequestDTO;
   invalidCredentials: boolean = false;
+  rememberMe: boolean = false;
 
   loginFormGroup = new FormGroup({
     username: new FormControl('', { nonNullable: true }),
     password: new FormControl('', { nonNullable: true }),
-    rememberMe: new FormControl(false)
+    rememberMe: new FormControl(false, { nonNullable: true })
   });
 
   onSubmit() {
     this.loginRequest.username = this.loginFormGroup.get('username')!.value;
     this.loginRequest.password = this.loginFormGroup.get('password')!.value;
+    this.rememberMe = this.loginFormGroup.get('rememberMe')!.value;
 
-    this.authService.login(this.loginRequest).subscribe({
+    this.authService.login(this.loginRequest, this.rememberMe).subscribe({
       next: () => {
         this.router.navigate(['/']);
       },

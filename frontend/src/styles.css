@@ -23,6 +23,8 @@ h4 {font-size: 1.777rem; /* 28.48px */}
 
 h5 {font-size: 1.333rem; /* 21.28px */}
 
+h6 {font-size: 1rem; /* 16px */}
+
 small {font-size: 0.750rem; /* 12px */}
 
 
@@ -70,6 +72,8 @@ form {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     padding: 2em;
     row-gap: 1em;
+
+    min-width: fit-content;
     width: 30%;
 
     .formControl {
@@ -82,6 +86,14 @@ form {
 
         &:focus {
           outline: 1px solid var(--primary);
+        }
+      }
+
+      input[type="checkbox"] {
+        margin-inline: 0.5em;
+
+        &:checked {
+          accent-color: var(--primary);
         }
       }
     }

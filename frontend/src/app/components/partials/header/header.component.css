@@ -5,14 +5,40 @@ header {
 
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 
     background: linear-gradient(60deg, var(--primary) 70%, var(--accent) 100%);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     color: white;
 
-    #title {
-        padding: .4em;
-        color: white;
+    .mobileFirstLine {
+
+        @media screen and (max-width: 768px) {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;   
+        }
+        position: relative;
+
+        #title {
+            padding: .4em;
+            color: white;
+        }
+    
+        #accountIcon
+        {
+            display: none;
+            @media (max-width: 768px) {
+                position: absolute;
+                right: 1rem;
+                height: 2.369rem;
+                object-fit: contain;
+                width: auto;
+                bottom: calc(50% - 1.184rem);
+                display: block;
+            }
+        }
     }
 
     nav {
@@ -22,15 +48,23 @@ header {
             height: 100%;
             display: flex;
 
+            @media(max-width: 768px) {
+                justify-content: stretch;
+            }
+
             li {
                 height: 100%;
+
+                @media(max-width: 768px) {
+                    flex: 1;
+                }
                 a {
                     position: relative;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    height: 100%;
-                    padding: 0 1em;
+                    height: calc(100% - 1em);
+                    padding: .5em 1em;
                     color: white;
                     transition: ease-in .1s;
 
@@ -54,6 +88,15 @@ header {
     }
 
     .user {
+        @media (min-width: 768px) {
+            flex-direction: column;
+            align-items: flex-end;
+            padding-right: 0.7em;
+        }
+        @media (max-width: 768px) {
+            display: none;
+            
+        }
         display: flex;
         flex-direction: column;
         justify-content: center;
