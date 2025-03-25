@@ -5,6 +5,8 @@ import { Observable, of, tap, catchError, map } from 'rxjs';
 import { LoginResponseDTO } from '../model/login-response.dto';
 import { UserDTO } from '../model/user.dto';
 import { IsValidTokenResponseDTO } from '../model/is-valid-token-response.dto';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environment/environment.dev';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +16,17 @@ export class AuthService {
   private readonly TOKEN_KEY = 'token';
 
   constructor(
-    private apiService: ApiService
+    private http: HttpClient
   ) { }
+
+  // Post request
+  public post(endpoint: string, data: any): Observable<any> {
+      return this.http.post(environment.backendUrl + endpoint, data, { withCredentials: true });
+    }
 
   // Login
   public login(loginData: LoginRequestDTO, rememberMe: boolean): Observable<LoginResponseDTO> {
-    return this.apiService.post('auth/login', loginData)
+    return this.post('auth/login', loginData)
       .pipe(
         tap((response: LoginResponseDTO) => {
           // Save token
@@ -51,7 +58,7 @@ export class AuthService {
 
   // Get user
   public getUser(): Observable<UserDTO> {
-    return this.apiService.post('auth/user', { token: this.getToken() });
+    return this.post('auth/user', { token: this.getToken() });
   }
 
   // Check if user is logged in
@@ -72,6 +79,6 @@ export class AuthService {
 
   // Check if token is valid
   public isValidToken(): Observable<IsValidTokenResponseDTO> {
-    return this.apiService.post('auth/validate', { token: this.getToken() });
+    return this.post('auth/validate', { token: this.getToken() });
   }
 }

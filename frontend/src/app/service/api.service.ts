@@ -15,14 +15,14 @@ export class ApiService {
   ) { }
 
   // Get request
-  public get(url: string): Observable<any> {
-    this.loggerService.info(("GET request to: " + url).toString(), []);
-    return this.http.get(environment.apiUrl + "/" + url, { withCredentials: true });
+  public get(endpoint: string): Observable<any> {
+    this.loggerService.info(("GET request to: " + endpoint).toString(), []);
+    return this.http.get(environment.apiUrl + endpoint, { withCredentials: true });
   }
 
   // Post request
-  public post(url: string, data: any): Observable<any> {
-    this.loggerService.info(("POST request to: " + url).toString(), []);
-    return this.http.post(environment.apiUrl + "/" + url, data, { withCredentials: true });
+  public post(endpoint: string, data: any): Observable<any> {
+    this.loggerService.info(("POST request to: " + endpoint).toString(), []);
+    return this.http.post(environment.apiUrl + endpoint, data, { withCredentials: true });
   }
 }

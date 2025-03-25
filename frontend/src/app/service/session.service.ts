@@ -15,6 +15,6 @@ export class SessionService {
 
   // Get all sessions
   public getAllSessions(): Observable<SessionDTO[]> {
-    return this.apiService.get('/sessions');
+    return this.apiService.get('sessions');
   }
 }
