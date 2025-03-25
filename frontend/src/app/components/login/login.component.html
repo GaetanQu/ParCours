@@ -1,12 +1,26 @@
-<h1>Connexion</h1>
+<app-header></app-header>
+<main>
+    <form [formGroup]="loginFormGroup" class="authForm">
+        <h2 id="title">Connexion</h2>
 
-<form [formGroup]="loginFormGroup">
-    <label for="username">Nom d'utilisateur</label>
-    <input type="text" name="username" id="username" formControlName="username" required>
-    <label for="password">Mot de passe</label>
-    <input type="password" name="password" id="password" formControlName="password" required>
-    <button (click)="onSubmit()">Connexion</button>
-    @if (this.invalidCredentials) {
-        <p class="error">Identifiants invalides</p>
-    }
-</form>
+        <div class="formControl">
+            <label for="username"><h4>Nom d'utilisateur</h4></label>
+            <input type="text" name="username" id="username" formControlName="username" placeholder="JohnDoe" required>
+        </div>
+
+        <div class="formControl">
+            <label for="password"><h4>Mot de passe</h4></label>
+            <input type="password" name="password" id="password" formControlName="password" placeholder="******" required>
+        </div>
+
+        <div class="formControl">
+            <label for="rememberMe">Se souvenir de moi</label>
+            <input type="checkbox" name="rememberMe" id="rememberMe" formControlName="rememberMe">
+        </div>
+
+        <button (click)="onSubmit()">Se connecter</button>
+        @if (this.invalidCredentials) {
+            <p class="error">Identifiants invalides</p>
+        }
+    </form>
+</main>

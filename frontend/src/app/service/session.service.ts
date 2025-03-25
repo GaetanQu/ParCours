@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class SessionService {
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
   ) { }
 
   // Get all sessions

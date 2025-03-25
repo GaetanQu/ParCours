@@ -1,17 +1,110 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
+
+body {
+  font-family: 'Onest';
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Onest';
+  font-weight: 700;
+}
+
+html {font-size: 100%;} /* 16px */
+
+h1 {font-size: 4.210rem; /* 67.36px */}
+
+h2 {font-size: 3.158rem; /* 50.56px */}
+
+h3 {font-size: 2.369rem; /* 37.92px */}
+
+h4 {font-size: 1.777rem; /* 28.48px */}
+
+h5 {font-size: 1.333rem; /* 21.28px */}
+
+small {font-size: 0.750rem; /* 12px */}
+
+
+/* Colors */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: #0b0616;
+    --background: #f4f1fb;
+    --primary: #6c3dcf;
+    --secondary: #e492c2;
+    --accent: #da697a;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #f0ebfa;
+    --background: #080410;
+    --primary: #5d30c0;
+    --secondary: #6e1c4c;
+    --accent: #972637;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+
+  color: var(--text);
+}
+
+body {
+  background-color: var(--background);
+  height: 100dvh;
 }
 
 form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  &.authForm {
+    background-color: white;
+    border-radius: 12px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 2em;
+    row-gap: 1em;
+    width: 30%;
+
+    .formControl {
+      width: 100%;
+      input[type="text"], input[type="password"] {
+        width: calc(100% - 2em);
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+
+        &:focus {
+          outline: 1px solid var(--primary);
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 1em;
+      border: none;
+      border-radius: 4px;
+      background-color: var(--primary);
+      color: white;
+      font-weight: 700;
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
+  }
 }
 
 .error {
   color: red;
+  text-wrap: wrap;
 }
 
 ul {
@@ -19,10 +112,19 @@ ul {
   padding: 0;
 }
 
+li {
+  padding: 0;
+}
+
 a {
   text-decoration: none;
-  color: black;
 
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+button {
   &:hover {
     cursor: pointer;
   }

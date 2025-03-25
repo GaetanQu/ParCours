@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../service/auth.service';
 import { UserDTO } from '../../../model/user.dto';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [
+    RouterModule
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -22,12 +25,17 @@ export class HeaderComponent {
   }
 
   loadUser() {
-    if(this.authService.isAuthenticated()){
-      this.authService.getUser().subscribe((user: UserDTO) => {
-        this.user = user;
-        console.log(this.user);
-      });
-    }
+    this.authService.isAuthenticated().subscribe(
+      {
+        next: (isAuthenticated) => {
+          if (isAuthenticated) {
+            this.authService.getUser().subscribe((user: UserDTO) => {
+              this.user = user;
+            });
+          }
+        }
+      }
+    );
   }
 
   logout() {

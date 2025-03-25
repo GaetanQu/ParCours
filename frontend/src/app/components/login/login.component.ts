@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { LoginRequestDTO } from '../../DTO/login-request.dto';
+import { LoginRequestDTO } from '../../model/login-request.dto';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
+import { HeaderComponent } from "../partials/header/header.component";
 
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    HeaderComponent
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -25,21 +27,28 @@ export class LoginComponent {
 
   loginFormGroup = new FormGroup({
     username: new FormControl('', { nonNullable: true }),
-    password: new FormControl('', { nonNullable: true })
+    password: new FormControl('', { nonNullable: true }),
+    rememberMe: new FormControl(false)
   });
 
   onSubmit() {
     this.loginRequest.username = this.loginFormGroup.get('username')!.value;
     this.loginRequest.password = this.loginFormGroup.get('password')!.value;
 
-    this.authService.login(this.loginRequest).subscribe(
-      () => {
+    this.authService.login(this.loginRequest).subscribe({
+      next: () => {
         this.router.navigate(['/']);
       },
-      (error) => {
-        console.error(error.error.error);
-        this.invalidCredentials = true;
+      error: (error) => {
+        switch (error.status) {
+          case 401:
+            this.invalidCredentials = true;
+            break;
+          default:
+            console.error(error);
+            break;
+        }
       }
-    );
+    });
   }
 }

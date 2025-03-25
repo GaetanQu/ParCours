@@ -1,14 +1,25 @@
-@if (user) {
-    <header>
+<header>
+    <h3 id="title">ParCours</h3>
+    @if(user){
         <nav>
             <ul>
-                <li><a routerLink="home" routerLinkActive="active">Home</a></li>
-                <li><a routerLink="sessions">Sessions</a></li>
+                <li>
+                    <a routerLink="" routerLinkActive="active">
+                        Dashboard
+                        <div class="bottomLine"></div>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="sessions" routerLinkActive="active">
+                        Sessions
+                        <div class="bottomLine"></div>
+                    </a>
+                </li>
             </ul>
         </nav>
-            <div class="user">
-                <span>Connecté en tant que {{ user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1) }}</span>
-                <button (click)="logout()">Se déconnecter</button>
-            </div>
-    </header>
-}
+        <div class="user">
+            <span>{{ user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1) }}</span>
+            <button (click)="logout()">Se déconnecter</button>
+        </div>
+    }
+</header>

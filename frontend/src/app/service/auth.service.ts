@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { LoginRequestDTO } from '../DTO/login-request.dto';
-import { firstValueFrom, lastValueFrom, Observable, tap } from 'rxjs';
-import { LoginResponseDTO } from '../DTO/login-response.dto';
+import { LoginRequestDTO } from '../model/login-request.dto';
+import { Observable, of, tap, catchError, map } from 'rxjs';
+import { LoginResponseDTO } from '../model/login-response.dto';
 import { UserDTO } from '../model/user.dto';
+import { IsValidTokenResponseDTO } from '../model/is-valid-token-response.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,6 @@ export class AuthService {
     private apiService: ApiService
   ) { }
 
-
   // Login
   public login(loginData: LoginRequestDTO): Observable<LoginResponseDTO> {
     return this.apiService.post('auth/login', loginData)
@@ -26,14 +26,12 @@ export class AuthService {
           if(response.token) {
             this.saveToken(response.token);
           }
-          // Debug
-          console.log(response);
         })
       );
   }
 
   // Save token to local storage
-  public saveToken(token: string):void {
+  public saveToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
   }
 
@@ -53,7 +51,18 @@ export class AuthService {
   }
 
   // Check if user is logged in
-  public isAuthenticated(): boolean {
-    return this.getToken() !== null;
+  public isAuthenticated(): Observable<boolean> {
+    if (this.getToken()) {
+      return this.isValidToken().pipe(
+        map((response: IsValidTokenResponseDTO) => response.isValid),
+        catchError(() => of(false))
+      );
+    }
+    return of(false);
+  }
+
+  // Check if token is valid
+  public isValidToken(): Observable<IsValidTokenResponseDTO> {
+    return this.apiService.post('auth/validate', { token: this.getToken() });
   }
 }

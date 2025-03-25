@@ -1,4 +1,4 @@
-import { UserDTO } from "../model/user.dto";
+import { UserDTO } from "./user.dto";
 
 export interface LoginResponseDTO {
     token: string;
