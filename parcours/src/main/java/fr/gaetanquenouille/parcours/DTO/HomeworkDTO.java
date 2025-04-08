@@ -1,6 +1,5 @@
 package fr.gaetanquenouille.parcours.DTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -10,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionDTO {
+public class HomeworkDTO {
     private Long id;
     private String label;
-    private LocalDateTime beginsAt;
-    private LocalDateTime endsAt;
+    private String description;
     private List<String> fileUrls;
     private List<UserDTO> users;
-    private List<SubjectDTO> subjects;
-    private List<HomeworkDTO> homeworks;
+    private SubjectDTO subject;
+    private SessionDTO session;
+    private List<UserDTO> hasDone;
 }

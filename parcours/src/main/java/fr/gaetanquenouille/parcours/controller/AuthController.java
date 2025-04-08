@@ -1,6 +1,7 @@
 package fr.gaetanquenouille.parcours.controller;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import fr.gaetanquenouille.parcours.DTO.LoginRequestDTO;
 import fr.gaetanquenouille.parcours.DTO.RegisterRequestDTO;
 import fr.gaetanquenouille.parcours.DTO.UserDTO;
 import fr.gaetanquenouille.parcours.config.JwtUtils;
+import fr.gaetanquenouille.parcours.mapper.RoleMapper;
 import fr.gaetanquenouille.parcours.mapper.UserMapper;
 import fr.gaetanquenouille.parcours.model.User;
 
@@ -34,7 +36,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final UserMapper userMapper = UserMapper.INSTANCE;
+    private final UserMapper userMapper;
 
     // Register a new user
     @PostMapping("/register")
@@ -55,6 +57,10 @@ public class AuthController {
         user.setLast_name(registerRequestDTO.getLast_name());
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
+        user.setRoles(registerRequestDTO.getRoles().stream()
+            .map(RoleMapper.INSTANCE::toEntity)
+            .collect(Collectors.toList())
+        );
         userRepository.save(user);
 
         UserDTO userDTO = userMapper.toDTO(user);

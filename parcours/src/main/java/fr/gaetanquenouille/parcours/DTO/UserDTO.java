@@ -1,9 +1,8 @@
 package fr.gaetanquenouille.parcours.DTO;
 
-import java.util.Set;
 
-import fr.gaetanquenouille.parcours.model.Role;
-import fr.gaetanquenouille.parcours.model.Session;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,6 @@ public class UserDTO {
     private String first_name;
     private String last_name;
     private String username;
-    private Set<Role> roles;
-    private Set<Session> sessions;
+    private List<RoleDTO> roles;
+    private List<SessionDTO> sessions;
 }

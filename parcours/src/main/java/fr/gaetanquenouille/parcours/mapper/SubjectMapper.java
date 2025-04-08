@@ -1,17 +1,17 @@
 package fr.gaetanquenouille.parcours.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import fr.gaetanquenouille.parcours.DTO.SubjectDTO;
 import fr.gaetanquenouille.parcours.model.Subject;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SubjectMapper {
-    SubjectMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(SubjectMapper.class);
 
+    static SubjectMapper INSTANCE = Mappers.getMapper(SubjectMapper.class);
+    
     SubjectDTO toDTO(Subject subject);
 
-    @Mapping(target = "sessions", ignore = true)
     Subject toEntity(SubjectDTO subjectDTO);
 }

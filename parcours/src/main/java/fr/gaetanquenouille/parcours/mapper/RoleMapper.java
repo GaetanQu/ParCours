@@ -8,7 +8,8 @@ import fr.gaetanquenouille.parcours.model.Role;
 
 @Mapper
 public interface RoleMapper {
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
+    
+    public static RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
 
     RoleDTO toDTO(Role role);
 

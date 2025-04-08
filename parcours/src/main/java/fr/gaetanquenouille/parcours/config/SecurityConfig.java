@@ -52,7 +52,10 @@ public class SecurityConfig {
         }))
         .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.GET, "/api/**").authenticated() // Only authenticated users can access data
+                .anyRequest().permitAll()
+            )
+            /*.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.GET, "/api/**").authenticated() // Only authenticated users can access data CHANGE IT BEFORE PUTTING IN PROD
                 .requestMatchers("/auth/register").hasRole("ADMIN") //Only the admin can create new users
                 .requestMatchers("/auth/login").permitAll() // Everyone can connect
                 .requestMatchers("/api/sessions").hasRole("TEACHER") // Teachers can edit sessions
@@ -60,7 +63,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/validate").permitAll() // Only authenticated users can access /auth/validate
 
                 .anyRequest().hasRole("ADMIN")
-            )
+            )*/
             .logout(logout -> logout
                 .logoutUrl("/auth/logout")
                 .permitAll()

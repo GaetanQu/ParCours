@@ -17,7 +17,7 @@ public class JwtUtils {
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // Expiration time of the token
-    private final long expirationTime= 36000000; // 10h
+    private final long expirationTime = 60L * 24 * 60 * 60 * 1000; // 60 days
 
     // Generate a token
     public String generateToken(String username){
